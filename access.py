@@ -6,8 +6,16 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import astropy.io.fits as fits
-from astropy.io.votable import parse
-import urllib, urllib2, shutil, os
+import astropy.io.votable 
+import urllib,  shutil, os, tempfile
+import numpy as np
+
+try:
+    from urllib.parse import urlencode
+    from urllib.request import Request, urlopen
+except ImportError:
+    from urllib2 import Request, urlopen
+    from urllib import urlencode
 
 def getHsaFits(urn, fname=None, save=False):
     """ Retrieve a product from the Herschel Science Archive 
@@ -24,9 +32,10 @@ def getHsaFits(urn, fname=None, save=False):
     """
     url = 'http://archives.esac.esa.int/hsa/aio/jsp/product.jsp'
     values = {'URN' : urn }
-    data = urllib.urlencode(values)
-    req = urllib2.Request(url, data)
-    response = urllib2.urlopen(req)
+    data = urlencode(values)
+    data = data.encode('utf-8')
+    req = Request(url, data)
+    response = urlopen(req)
     if fname:
         fp = open(fname, 'wb')
     else:
@@ -58,7 +67,7 @@ def parseContextHdu(hdu):
     elif (nfields == 1):
         isMap = False
     else:
-        raise ValueError, "Unknown context table number of fields %d" % nfields
+        raise(ValueError, "Unknown context table number of fields %d" % nfields)
     bTable = hdu['bridges'].data
     if isMap:
         for i in range(len(bTable['name'])):
@@ -89,12 +98,18 @@ def getObsUrn(obsid, instrument='PACS', spgVersion='SPG v12.1.0'):
               'HCSS_CLASS_TYPE' : 'herschel.ia.obs.ObservationContext', \
               'LIMIT' : 5000, \
               'RETURN_TYPE' : 'VOTABLE' }
-    data = urllib.urlencode(values)
-    req = urllib2.Request(url, data)
-    response = urllib2.urlopen(req)
-    votable = parse(response, pedantic=False)
-    table = votable.get_first_table().to_table()
+    data = urlencode(values)
+    data = data.encode('utf-8')
+    req = Request(url, data)
+    response = urlopen(req)
+    fp = tempfile.NamedTemporaryFile(prefix="hsavo", mode='wb', delete=False)
+    fname = fp.name
+    shutil.copyfileobj(response, fp)
+    fp.close()
+    votab = astropy.io.votable.parse_single_table(fname, pedantic=False)
+    table = votab.to_table()
     table = table[np.where(table['HCSSTrackVersion'] == np.max(table['HCSSTrackVersion']))]
+    os.path.exists(fname) and os.remove(fname)
     urn = table['URN'].data[0]
     return(urn)
 

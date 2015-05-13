@@ -12,13 +12,13 @@ def downloadPacsMap(ldict, obsid, lev, bandKey, direc='./PacsPhoto/', overWrite=
     if bandKey in ldict:
         filename = os.path.join(direc,"%s_PACS_%s_%s_SPGv12.1.0.fits.gz"%(obsid,lev,bandKey))
         if (os.path.exists(filename) and (overWrite == False)):
-            print 'file ' + filename + ' already downloaded'
+            print('file ' + filename + ' already downloaded')
         else:
             hdu = getHsaFits(ldict[bandKey], fname=filename, save=True)
             hdu.close()
-            print 'downloaded ' + filename
+            print('downloaded ' + filename)
     else:
-        print 'did not find %s in %s for %s' %(bandKey, lev, obsid)
+        print('did not find %s in %s for %s' %(bandKey, lev, obsid))
         
 def storePacsPhoto(obsid, direc='./PacsPhoto/', blueCheck=True):
     instrument = 'PACS'
@@ -34,7 +34,7 @@ def storePacsPhoto(obsid, direc='./PacsPhoto/', blueCheck=True):
             if (obsid == lhdulist[0].header['obsid001']):
                 downloadPacsMap(ldict, obsid, lev, bandKey, direc)
             else:
-                print 'skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001'])
+                print('skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001']))
         bandKey = 'HPPJSMAPB'
         if (bandKey in ldict):
             if ((blueCheck == False) or (obsid == lhdulist[0].header['obsid001'])):
@@ -46,7 +46,7 @@ def storePacsPhoto(obsid, direc='./PacsPhoto/', blueCheck=True):
             if ((blueCheck == False) or (obsid == lhdulist[0].header['obsid001'])):
                 downloadPacsMap(ldict, obsid, lev, bandKey, direc)
             else:
-                print 'skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001'])
+                print('skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001']))
                 
     elif 'level2_5' in cdict:
         lev = 'L25'
@@ -57,7 +57,7 @@ def storePacsPhoto(obsid, direc='./PacsPhoto/', blueCheck=True):
                 if (((blueCheck == False) and (bandKey[-1] == 'B')) or (obsid == lhdulist[0].header['obsid001'])):
                     downloadPacsMap(ldict, obsid, lev, bandKey, direc)
                 else:
-                    print 'skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001'])
+                    print('skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001']))
     elif 'level2' in cdict:
         lev = 'L2'
         lhdulist = getHsaFits(cdict['level2'])
