@@ -78,7 +78,8 @@ def parseContextHdu(hdu):
     return(cdict)
 
 
-def getObsUrn(obsid, instrument='PACS', spgVersion='SPG v12.1.0'):
+def getObsUrn(obsid, instrument='PACS', spgVersion='SPG v13.0.0',\
+    url = 'http://archives.esac.esa.int/hsa/aio/jsp/metadata/jsp'):
     """ Retrieve the URN string for an observation id from the Herschel Science Archive,
      for a specified spgVersion and instrument.
     
@@ -86,13 +87,14 @@ def getObsUrn(obsid, instrument='PACS', spgVersion='SPG v12.1.0'):
     -----------
     obsid (long) : integer Observation ID, like 1342186233
     instrument (string) : 'PACS', 'SPIRE' or 'HIFI' (defaults to 'PACS')
-    spgVersion (string) : SPG version (defaults to 'SPG v12.1.0')
+    spgVersion (string) : SPG version (defaults to 'SPG v13.0.0')
+    url (string) : URL for HAIO connection 
+                   (defaults to 'http://archives.esac.esa.int/hsa/aio/jsp/metadata/jsp')
     
     Returns:
     --------
     urn (string) : Univeral Resource Name in the archive for this product
     """
-    url = 'http://archives.esac.esa.int/hsa/aio/jsp/metadata.jsp'
     values = {'RESOURCE_CLASS' : 'PRODUCT', \
               'QUERY' : "(( obsid==%d) and instrument=='%s' and ( creator=='%s'))"%(obsid, instrument, spgVersion), \
               'HCSS_CLASS_TYPE' : 'herschel.ia.obs.ObservationContext', \
