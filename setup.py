@@ -10,9 +10,6 @@ setup(
     author='David Shupe',
     author_email='shupe@ipac.caltech.edu',
     license='BSD',
-    py_modules = [
-        'access',
-        'getpacs'
-    ]
+    packages = ['hsadownload']
 )
 
