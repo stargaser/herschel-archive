@@ -111,10 +111,13 @@ def getObsUrn(obsid, instrument='PACS', spgVersion='SPG v13.0.0',\
     fp.close()
     votab = astropy.io.votable.parse_single_table(fname, pedantic=False)
     table = votab.to_table()
-    table = table[np.where(table['HCSSTrackVersion'] == np.max(table['HCSSTrackVersion']))]
-    os.path.exists(fname) and os.remove(fname)
-    urn = table['URN'].data[0]
-    return(urn)
+    if (len(table) > 0):
+        table = table[np.where(table['HCSSTrackVersion'] == np.max(table['HCSSTrackVersion']))]
+        os.path.exists(fname) and os.remove(fname)
+        urn = table['URN'].data[0]
+        return(urn)
+    else:
+        return(None)
 
 def fixHerschelHeader(header):
     """ 
