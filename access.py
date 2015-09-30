@@ -17,7 +17,8 @@ except ImportError:
     from urllib2 import Request, urlopen
     from urllib import urlencode
 
-def getHsaFits(urn, fname=None, save=False):
+def getHsaFits(urn, fname=None, save=False,\
+        url = 'http://archives.esac.esa.int/hsa/aio/jsp/product.jsp'):
     """ Retrieve a product from the Herschel Science Archive 
     
         Parameters:
@@ -25,12 +26,12 @@ def getHsaFits(urn, fname=None, save=False):
         urn (string) : Uniform Resource Name in the Herschel Science Archive
         fname (string): filename or filepath; if None, a temporary file is used
         save (boolean): if True, don't delete the FITS file that is written to disk
+        url (string) : URL for the archive
         
         Returns:
         --------
         hdu : an astropy.io.fits HDU object with the product contents
     """
-    url = 'http://archives.esac.esa.int/hsa/aio/jsp/product.jsp'
     values = {'URN' : urn }
     data = urlencode(values)
     data = data.encode('utf-8')
@@ -79,7 +80,7 @@ def parseContextHdu(hdu):
 
 
 def getObsUrn(obsid, instrument='PACS', spgVersion='SPG v13.0.0',\
-    url = 'http://archives.esac.esa.int/hsa/aio/jsp/metadata/jsp'):
+    url = 'http://archives.esac.esa.int/hsa/aio/jsp/metadata.jsp'):
     """ Retrieve the URN string for an observation id from the Herschel Science Archive,
      for a specified spgVersion and instrument.
     
