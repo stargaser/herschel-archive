@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 from hsadownload.access import getHsaFits, getObsUrn, parseContextHdu, fixHerschelHeader
 import os
+import astropy.io.fits as fits
 
 
 def downloadPacsMap(ldict, obsid, lev, bandKey, direc='./PacsPhoto/', \
