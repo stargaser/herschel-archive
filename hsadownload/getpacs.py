@@ -73,6 +73,9 @@ def storePacsPhoto(obsid, spgVersion='SPG v13.0.0', direc='./PacsPhoto/', blueCh
         if (bandKey in ldict):
             if ((blueCheck == False) or (obsid == lhdulist[0].header['obsid001'])):
                 downloadPacsMap(ldict, obsid, lev, bandKey, direc)
+        elif ('HPPJSMAPG' in ldict):
+            if ((blueCheck == False) or (obsid == lhdulist[0].header['obsid001'])):
+                downloadPacsMap(ldict, obsid, lev, 'HPPJSMAPG', direc)
         else: # get Level 2.5
             lev = 'L25'
             lhdulist = getHsaFits(cdict['level2_5'])
