@@ -28,9 +28,12 @@ def downloadSpireMap(ldict, obsid, lev, bandKey, direc='./SpirePhoto/', \
     normVersion = ''.join(spgVersion.split())
     if bandKey in ldict:
         filename = os.path.join(direc,"%s_SPIRE_%s_%s_%s.fits.gz"%(obsid,lev,bandKey,normVersion))
-        hdu = getHsaFits(ldict[bandKey], fname=filename, save=True)
-        hdu.close()
-        print('downloaded ' + filename)
+        if (os.path.exists(filename) and (overWrite == False)):
+            print('file ' + filename + ' already downloaded')
+        else:
+            hdu = getHsaFits(ldict[bandKey], fname=filename, save=True)
+            hdu.close()
+            print('downloaded ' + filename)
     else:
         print('did not find %s in %s for %s' %(bandKey, lev, obsid))
 
