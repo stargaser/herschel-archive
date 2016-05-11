@@ -4,7 +4,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from hsadownload.access import getHsaFits, getObsUrn, parseContextHdu, fixHerschelHeader
+from hsadownload.access import getHsaFits, getObsUrn, parseContextHdu, fixHerschelHeader, \
+                             getMinObsid
 import os
 import astropy.io.fits as fits
 
@@ -65,29 +66,29 @@ def storePacsPhoto(obsid, spgVersion='SPG v14.0.1', direc='./PacsPhoto/', blueCh
         lhdulist = getHsaFits(cdict['level3'])
         ldict = parseContextHdu(lhdulist)
         if (bandKey in ldict):
-            if (obsid == lhdulist[0].header['obsid001']):
+            if (obsid == getMinObsid(lhdulist[0]))):
                 downloadPacsMap(ldict, obsid, lev, bandKey, direc,
                                   spgVersion=spgVersion)
             else:
-                print('skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001']))
+                print('skipping %s for %s since minObsId is %s' % (bandKey, obsid, getMinObsid(lhdulist[0])))
         bandKey = 'HPPJSMAPB'
         if (bandKey in ldict):
-            if ((blueCheck == False) or (obsid == lhdulist[0].header['obsid001'])):
+            if ((blueCheck == False) or (obsid == getMinObsid(lhdulist[0]))):
                 downloadPacsMap(ldict, obsid, lev, bandKey, direc,
                                      spgVersion=spgVersion)
         elif ('HPPJSMAPG' in ldict):
-            if ((blueCheck == False) or (obsid == lhdulist[0].header['obsid001'])):
+            if ((blueCheck == False) or (obsid == getMinObsid(lhdulist[0]))):
                 downloadPacsMap(ldict, obsid, lev, 'HPPJSMAPG', direc,
                                    spgVersion=spgVersion)
         else: # get Level 2.5
             lev = 'L25'
             lhdulist = getHsaFits(cdict['level2_5'])
             ldict = parseContextHdu(lhdulist)
-            if ((blueCheck == False) or (obsid == lhdulist[0].header['obsid001'])):
+            if ((blueCheck == False) or (obsid == getMinObsid(lhdulist[0]))):
                 downloadPacsMap(ldict, obsid, lev, bandKey, direc,
                                    spgVersion=spgVersion)
             else:
-                print('skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001']))
+                print('skipping %s for %s since minObsid is %s' % (bandKey, obsid, getMinObsid(lhdulist[0])))
 
     elif 'level2_5' in cdict:
         lev = 'L25'
@@ -95,11 +96,11 @@ def storePacsPhoto(obsid, spgVersion='SPG v14.0.1', direc='./PacsPhoto/', blueCh
         ldict = parseContextHdu(lhdulist)
         for bandKey in ['HPPJSMAPR','HPPJSMAPB']:
             if (bandKey in ldict):
-                if (((blueCheck == False) and (bandKey[-1] == 'B')) or (obsid == lhdulist[0].header['obsid001'])):
+                if (((blueCheck == False) and (bandKey[-1] == 'B')) or (obsid == getMinObsid(lhdulist[0]))):
                     downloadPacsMap(ldict, obsid, lev, bandKey, direc,
                                      spgVersion=spgVersion)
                 else:
-                    print('skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001']))
+                    print('skipping %s for %s since minObsid is %s' % (bandKey, obsid, getMinObsid(lhdulist[0])))
     elif 'level2' in cdict:
         lev = 'L2'
         lhdulist = getHsaFits(cdict['level2'])

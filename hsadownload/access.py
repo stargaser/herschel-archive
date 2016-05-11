@@ -141,3 +141,29 @@ def fixHerschelHeader(header):
                 except ValueError:
                     pass
     return(hdr)
+    
+def getMinObsid(header):
+    """
+    Find minimum obsid in a header
+    
+    Parameters:
+    -----------
+    header: astropy.io.fits.header Header object
+    
+    Returns:
+    --------
+    minObsid: minimum obsid, or None if not found
+    """
+    hdr = fixHerschelHeader(header)
+    for i in range(1,1000):
+        key1 = 'OBSID%3.3d'%i               
+        key2 = 'OBSID%4.4d'%i
+        key3 = 'OBSID%5.5d'%i
+        if key1 in hdr.keys():
+            return hdr[key1]
+        if key2 in hdr.keys():
+            return hdr[key2]
+        if key3 in hdr.keys():
+            return hdr[key3]
+    return(None) 
+   ....:     if (key1 in header.keys()) or
