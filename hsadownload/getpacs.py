@@ -10,7 +10,7 @@ import astropy.io.fits as fits
 
 
 def downloadPacsMap(ldict, obsid, lev, bandKey, direc='./PacsPhoto/', \
-    spgVersion='SPG v13.0.0', overWrite=False):
+    spgVersion='SPG v14.0.1', overWrite=False):
     """
     Download PACS map. Not meant to be called directly but to be called by
     storePacsPhoto.
@@ -38,7 +38,7 @@ def downloadPacsMap(ldict, obsid, lev, bandKey, direc='./PacsPhoto/', \
     else:
         print('did not find %s in %s for %s' %(bandKey, lev, obsid))
 
-def storePacsPhoto(obsid, spgVersion='SPG v13.0.0', direc='./PacsPhoto/', blueCheck=True):
+def storePacsPhoto(obsid, spgVersion='SPG v14.0.1', direc='./PacsPhoto/', blueCheck=True):
     """
     Download and store a PACS map
 

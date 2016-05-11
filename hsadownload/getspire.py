@@ -10,7 +10,7 @@ import astropy.io.fits as fits
 
 
 def downloadSpireMap(ldict, obsid, lev, bandKey, direc='./SpirePhoto/', \
-    spgVersion='SPG v13.0.0', overWrite=False):
+    spgVersion='SPG v14.0.1', overWrite=False):
     """
     Download SPIRE map. Not meant to be called directly but to be called by
     storeSpirePhoto.
@@ -34,8 +34,8 @@ def downloadSpireMap(ldict, obsid, lev, bandKey, direc='./SpirePhoto/', \
     else:
         print('did not find %s in %s for %s' %(bandKey, lev, obsid))
 
-def storeSpirePhoto(obsid, spgVersion='SPG v13.0.0', direc='./SpirePhotoScan/'):
-        """
+def storeSpirePhoto(obsid, spgVersion='SPG v14.0.1', direc='./SpirePhotoScan/'):
+    """
     Download and store a SPIRE map
 
     Parameters:
