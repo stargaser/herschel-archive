@@ -1,3 +1,3 @@
 
-__all__ = ['access', 'getpacs']
-from hsadownload import access, getpacs
+__all__ = ['access', 'getpacs', 'getspire']
+from hsadownload import access, getpacs, getspire
