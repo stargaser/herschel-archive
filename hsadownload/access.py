@@ -166,4 +166,4 @@ def getMinObsid(header):
         if key3 in hdr.keys():
             return hdr[key3]
     return(None) 
-   ....:     if (key1 in header.keys()) or
+
