@@ -16,9 +16,9 @@ def downloadSpireMap(ldict, obsid, lev, bandKey, direc='./SpirePhoto/', \
         filename = os.path.join(direc,"%s_SPIRE_%s_%s_%s.fits.gz"%(obsid,lev,bandKey,normVersion))
         hdu = getHsaFits(ldict[bandKey], fname=filename, save=True)
         hdu.close()
-        print 'downloaded ' + filename
+        print('downloaded ' + filename)
     else:
-        print 'did not find %s in %s for %s' %(bandKey, lev, obsid)
+        print('did not find %s in %s for %s' %(bandKey, lev, obsid))
 
 def storeSpirePhoto(obsid, spgVersion='SPG v13.0.0', direc='./SpirePhotoScan/'):
     instrument = 'SPIRE'
@@ -36,7 +36,7 @@ def storeSpirePhoto(obsid, spgVersion='SPG v13.0.0', direc='./SpirePhotoScan/'):
                     downloadSpireMap(ldict, obsid, lev, bandKey, direc,
                              spgVersion=spgVersion)
                 else:
-                    print 'skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001'])
+                    print('skipping %s for %s since obsid001 is %s' % (bandKey, obsid, lhdulist[0].header['obsid001']))
     elif 'level2' in cdict:
         lev = 'L2'
         lhdulist = getHsaFits(cdict['level2'])
