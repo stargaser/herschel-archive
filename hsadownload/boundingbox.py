@@ -8,8 +8,6 @@
 # and working code (error in the original) at http://gis.stackexchange.com/questions/22895/how-to-find-the-minimum-area-rectangle-for-given-points/169633#169633
 #
 
-# In[1]:
-
 import numpy as np
 from scipy.spatial import ConvexHull
 
@@ -45,11 +43,6 @@ def minimum_bounding_rectangle(points):
         np.cos(angles-pi2),
         np.cos(angles+pi2),
         np.cos(angles)]).T
-#     rotations = np.vstack([
-#         np.cos(angles),
-#         -np.sin(angles),
-#         np.sin(angles),
-#         np.cos(angles)]).T
     rotations = rotations.reshape((-1, 2, 2))
 
     # apply rotations to the hull
@@ -81,13 +74,11 @@ def minimum_bounding_rectangle(points):
     return rval
 
 
-# In[2]:
 
 from scipy.optimize import OptimizeResult, minimize
 from shapely.geometry import Polygon, MultiPoint
 
 
-# In[3]:
 
 def fun(x, hull):
     coords = x.reshape(4,2)
@@ -102,7 +93,6 @@ def fun(x, hull):
 #
 # We can try an iterative approach.
 
-# In[20]:
 
 def fourCorners(fname, ext=1):
     """
@@ -136,65 +126,5 @@ def fourCorners(fname, ext=1):
                options={'ftol': 1e-4, 'disp': True, 'eps': 0.1})
     corners = w.all_pix2world(res.x.reshape(4,2),0)
     return(corners)
-
-
-# ## Test on a SPIRE image, pixel coordinates only
-
-# In[13]:
-
-import astropy.io.fits as fits
-from astropy.wcs import WCS
-
-
-# In[39]:
-
-#fname = '/Users/shupe/data/spsc/level2/20151007/fits/fits/1342186233PLW_pmd.fits.zip'
-#fname = '/Users/shupe/data/spsc/level2/20151007/fits/fits/1342206677PLW_pmd.fits.zip'
-fname = '/Users/shupe/data/spsc/level2/20151007/fits/fits/1342206694PSW_pmd.fits.zip'
-#fname = '/Users/shupe/data/spsc/level2/20151007/fits/fits/1342207030PSW_pmd.fits.zip'
-
-
-# In[40]:
-
-hdu = fits.open(fname)
-
-
-# In[41]:
-
-get_ipython().magic('time mycorners = fourCorners(fname)')
-
-
-# In[42]:
-
-mycorners
-
-
-# ## Plot image and box in world coordinates
-
-# In[43]:
-
-import matplotlib.pyplot as plt
-get_ipython().magic('matplotlib inline')
-
-
-# In[44]:
-
-import aplpy
-
-
-# In[45]:
-
-gc = aplpy.FITSFigure(hdu[1])
-gc.show_grayscale()
-gc.show_polygons([mycorners], edgecolor='b')
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
 
 
