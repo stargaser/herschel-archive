@@ -123,7 +123,7 @@ def fourCorners(fname, ext=1):
     hull = points.convex_hull
     # From trial-and-error, the L-BFGS-B method works the best by far
     res = minimize(lambda x: fun(x, hull), rect.flat, method='L-BFGS-B',
-               options={'ftol': 1e-4, 'disp': True, 'eps': 0.1})
+               options={'ftol': 1e-4, 'disp': False, 'eps': 0.1})
     corners = w.all_pix2world(res.x.reshape(4,2),0)
     return(corners)
 
